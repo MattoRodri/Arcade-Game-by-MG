@@ -1,39 +1,43 @@
 // Enemies our player must avoid
 let allEnemies = [];
-
-var Enemy = function(y) {
+var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = 0;
+    this.x = -101;
     this.y = [];
-    this.random =  Math.floor( Math.random() * 3 );
-
+    this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;
     for (i = 0; i <= 5; i++) {
         this.y.push(i * 83 + 60);
     }
-    this.coordinatesY = this.y[this.random];
+    this.coordinatesY = this.y[this.random()];
 };
 
-
-let enemy = new Enemy();
-allEnemies.push(enemy);
+Enemy.prototype.random = function() {
+        let randomY = Math.floor( Math.random() * 3 );
+        return randomY;
+    };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+    this.x += (this.speed * dt);
+    if (this.x > 505) {
+        this.x = -101; 
+        this.coordinatesY = this.y[this.random()];
+        this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;
+    }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    //console.log( Math.floor( Math.random() * 3 ));
 };
-
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.coordinatesY);
-    //console.log( Math.floor( Math.random() * 3 ));
 };
 
 // Now write your own player class
@@ -59,3 +63,9 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+// Create a new enemy and push it to allEnemies Array
+let enemy = new Enemy();
+let enemy2 = new Enemy();
+let enemy3 = new Enemy();
+allEnemies.push(enemy, enemy2, enemy3);
