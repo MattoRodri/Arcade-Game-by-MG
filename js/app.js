@@ -47,8 +47,10 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 function Player() {
-    this.x = 505/2 - 101/2;
-    this.y = 404;
+    this.startingX = 505/2 - 101/2;
+    this.startingY = 404; 
+    this.x = this.startingX;
+    this.y = this.startingY;
     this.sprite = 'images/char-boy.png';
 }
 
@@ -63,8 +65,9 @@ Player.prototype.update = function() {
     } 
     if (this.y >= 404) {
         this.y = 404;
-    }  else if (this.y <=0) {
-        this.y = 0;
+    }  else if (this.y <= -83) {
+        this.y = this.startingY;
+        this.x = this.startingX;
     }
 };
 
@@ -93,6 +96,21 @@ Player.prototype.handleInput = function(key) {
     }
 };
 
+/*
+* Creating checkCollisions function to dtermine when player and enemy collides. 
+*/
+
+let checkCollisions = function() {
+
+    if (player.x < enemy.x + 71  && player.x + 71 > enemy.x &&
+        player.y < enemy.coordinatesY + 71 && player.y + 71 > enemy.coordinatesY) {
+    // The objects are touching
+    player.x = player.startingX;
+    player.y = player.startingY;
+   };
+}; 
+
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -114,9 +132,9 @@ document.addEventListener('keyup', function(e) {
 * Create a new enemy and push it to allEnemies Array
 */ 
 const enemy = new Enemy();
-const enemy2 = new Enemy();
-const enemy3 = new Enemy();
-allEnemies.push(enemy, enemy2, enemy3);
+// const enemy2 = new Enemy();
+// const enemy3 = new Enemy();
+allEnemies.push(enemy);
 
 /*
 * Create a new player
