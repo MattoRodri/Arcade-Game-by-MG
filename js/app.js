@@ -1,14 +1,9 @@
-// Enemies our player must avoid
+ /*
+ * Enemy class and the array for all the enemies, the player will have to avoid the enemies.
+ */ 
+
 let allEnemies = [];
-const Keys = {
-
-};
 function Enemy() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = -101;
     this.y = [];
@@ -17,15 +12,17 @@ function Enemy() {
         this.y.push(i * 83 + 60);
     }
     this.coordinatesY = this.y[this.random()];
-};
+}
 
 Enemy.prototype.random = function() {
         let randomY = Math.floor( Math.random() * 3 );
         return randomY;
-    };
+    }
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+ /*
+ * Parameter: dt, a time delta between ticks
+ */   
+
 Enemy.prototype.update = function(dt) {
     this.x += (this.speed * dt);
     if (this.x > 505) {
@@ -33,19 +30,19 @@ Enemy.prototype.update = function(dt) {
         this.coordinatesY = this.y[this.random()];
         this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;
     }
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    //console.log( Math.floor( Math.random() * 3 ));
-};
-// Draw the enemy on the screen, required method for game
+
+/*
+* Creating a render method for Enemies to be drawn on the page
+*/
+
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.coordinatesY);
-};
+}
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+/*
+* A player class.
+*/
+
 function Player() {
     this.startingX = 505/2 - 101/2;
     this.startingY = 404; 
@@ -57,6 +54,7 @@ function Player() {
 /*
 * Creating an update method to update the player movements, set some movement rules. 
 */
+
 Player.prototype.update = function() {
     if (this.x >= 404) {
         this.x = 404;
@@ -69,7 +67,7 @@ Player.prototype.update = function() {
         this.y = this.startingY;
         this.x = this.startingX;
     }
-};
+}
 
 /*
 * Creating a render method for Player to be drawn on the page
@@ -77,7 +75,7 @@ Player.prototype.update = function() {
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+}
 
 
 /*
@@ -94,25 +92,31 @@ Player.prototype.handleInput = function(key) {
     } else if (key === 'up') {
         this.y -= 83;
     }
-};
+}
 
 /*
-* Creating checkCollisions function to dtermine when player and enemy collides. 
+* Creating checkCollisions function to determine when player and enemy collides. 
 */
 
 let checkCollisions = function() {
+    for (let i = 0; i < allEnemies.length; i++) {
+        let enemyRadius = 71/2;
+        let playerRadius = 71/2;
+        let dx = allEnemies[i].x - player.x; 
+        let dy = allEnemies[i].coordinatesY - player.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < enemyRadius + playerRadius) {
+            player.x = player.startingX;
+            player.y = player.startingY;
+       }
+    }
+}
 
-    if (player.x < enemy.x + 71  && player.x + 71 > enemy.x &&
-        player.y < enemy.coordinatesY + 71 && player.y + 71 > enemy.coordinatesY) {
-    // The objects are touching
-    player.x = player.startingX;
-    player.y = player.startingY;
-   };
-}; 
+/*
+* This listens for key presses and sends the keys to your
+* Player.handleInput() method.
+*/
 
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
@@ -125,16 +129,14 @@ document.addEventListener('keyup', function(e) {
 });
 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
 /*
 * Create a new enemy and push it to allEnemies Array
 */ 
-const enemy = new Enemy();
-// const enemy2 = new Enemy();
-// const enemy3 = new Enemy();
-allEnemies.push(enemy);
+const enemy1 = new Enemy();
+const enemy2 = new Enemy();
+const enemy3 = new Enemy();
+allEnemies.push(enemy1, enemy2, enemy3);
+console.log(allEnemies);
 
 /*
 * Create a new player
