@@ -8,7 +8,7 @@ function Enemy() {
     this.x = -101;
     this.y = [];
     this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;
-    for (i = 0; i <= 5; i++) {
+    for (let i = 0; i <= 5; i++) {
         this.y.push(i * 83 + 60);
     }
     this.coordinatesY = this.y[this.random()];
@@ -17,7 +17,7 @@ function Enemy() {
 Enemy.prototype.random = function() {
         let randomY = Math.floor( Math.random() * 3 );
         return randomY;
-    }
+    };
 
  /*
  * Parameter: dt, a time delta between ticks
@@ -30,14 +30,14 @@ Enemy.prototype.update = function(dt) {
         this.coordinatesY = this.y[this.random()];
         this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;
     }
-
+};
 /*
 * Creating a render method for Enemies to be drawn on the page
 */
 
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.coordinatesY);
-}
+};
 
 /*
 * A player class.
@@ -67,7 +67,7 @@ Player.prototype.update = function() {
         this.y = this.startingY;
         this.x = this.startingX;
     }
-}
+};
 
 /*
 * Creating a render method for Player to be drawn on the page
@@ -75,8 +75,42 @@ Player.prototype.update = function() {
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
+/*
+* A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
+*/
+
+function Panel(w, h, x, y, sprite, group) {
+    this.lifes = 3;
+    this.heartX = 0;
+    this.w = w;
+    this.h = h; 
+    this.x = x; 
+    this.y = y; 
+    this.sprite = sprite; 
+    this.group = group; 
+} 
+
+/*
+* Creating a render method for Panel to be drawn on the page
+*/
+
+Panel.prototype.render = function() {
+    if (this.group === 'hearts') {
+        for (let i = 1; i <= this.lifes; i++) {
+            ctx.drawImage(Resources.get(this.sprite), this.x + this.heartX, this.y, this.w, this.h);
+            this.heartX += this.w;
+        }
+        this.heartX = 0;
+    }
+};
+
+/*
+* Creating panel objects 
+*/
+
+const heart = new Panel(40, 60, 0, 0,'images/Heart.png', 'hearts');
 
 /*
 * Creating handleInput function for controlling the player with arrows
@@ -92,7 +126,7 @@ Player.prototype.handleInput = function(key) {
     } else if (key === 'up') {
         this.y -= 83;
     }
-}
+};
 
 /*
 * Creating checkCollisions function to determine when player and enemy collides. 
@@ -136,7 +170,6 @@ const enemy1 = new Enemy();
 const enemy2 = new Enemy();
 const enemy3 = new Enemy();
 allEnemies.push(enemy1, enemy2, enemy3);
-console.log(allEnemies);
 
 /*
 * Create a new player
