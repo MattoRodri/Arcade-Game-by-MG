@@ -81,14 +81,15 @@ Player.prototype.render = function() {
 * A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
 */
 
-function Panel(w, h, x, y, sprite, group) {
+function Panel(w, h, x, y, group) {
     this.lifes = 3;
     this.heartX = 0;
+    this.points = 12500;
     this.w = w;
     this.h = h; 
     this.x = x; 
     this.y = y; 
-    this.sprite = sprite; 
+    this.spriteHeart = 'images/Heart.png'; 
     this.group = group; 
 } 
 
@@ -99,18 +100,29 @@ function Panel(w, h, x, y, sprite, group) {
 Panel.prototype.render = function() {
     if (this.group === 'hearts') {
         for (let i = 1; i <= this.lifes; i++) {
-            ctx.drawImage(Resources.get(this.sprite), this.x + this.heartX, this.y, this.w, this.h);
+            ctx.drawImage(Resources.get(this.spriteHeart), this.x + this.heartX, this.y, this.w, this.h);
             this.heartX += this.w;
         }
         this.heartX = 0;
     }
+    if (this.group === 'scores') {
+        ctx.font = "25px 'Audiowide', cursive";        
+        ctx.fillText(this.points, this.x, this.y);
+        // this.points++;
+    }
 };
+
+/*
+* Creating a update method for Panel for all the updates for the point calculation, point reductions etc.
+*/
+
 
 /*
 * Creating panel objects 
 */
 
-const heart = new Panel(40, 60, 0, 0,'images/Heart.png', 'hearts');
+const heart = new Panel(40, 60, 0, 0, 'hearts');
+const score = new Panel(0, 0, 400, 40, 'scores');  
 
 /*
 * Creating handleInput function for controlling the player with arrows
