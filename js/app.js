@@ -7,7 +7,7 @@ function Enemy() {
     this.sprite = 'images/enemy-bug.png';
     this.x = -101;
     this.y = [];
-    this.level = 1;
+    this.level = 0;
     this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;
     for (let i = 0; i <= 5; i++) {
         this.y.push(i * 83 + 60);
@@ -30,13 +30,18 @@ Enemy.prototype.update = function(dt) {
         this.x = -101; 
         this.coordinatesY = this.y[this.random()];
         if (score.points <= 200) {
-            this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;        
+            this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;      
             } else if (score.points > 200 && score.points <= 600) {
             this.speed = Math.floor(Math.random() * (450 - 150 + 1)) + 250;
+            this.level = 1;
             }   else if (score.points > 600 && score.points <= 1400) {
             this.speed = Math.floor(Math.random() * (450 - 250 + 1)) + 350;
+            this.level = 2;
             }   else if (score.points > 1400) {
             this.speed = Math.floor(Math.random() * (450 - 350 + 1)) + 450;
+            this.level = 3;
+            } else if (score.points > 1400) {
+            this.level = 4;
             }
         }
 };
@@ -106,7 +111,7 @@ function Panel(w, h, x, y, group) {
 } 
 
 /*
-* Creating a render method for Panel to be drawn on the page
+* Creating a render method for Panel to be drawn on the page (hearts, points and pause)
 */
 
 Panel.prototype.render = function() {
@@ -131,7 +136,7 @@ Panel.prototype.update = function() {
 };
 
 /*
-* Creating handleInput function for controlling the player with arrows
+* Creating handleInput function for controlling the player with arrows on the keyboard
 */
 
 Player.prototype.handleInput = function(key) {
@@ -178,7 +183,7 @@ const lifeRemove = function() {
 }
 
 /*
-* Creating pointCalc function in order to add points when reached the top successfully, also adding an enemy after user reaches 2200 points
+* Creating pointCalc function in order to add points when reached the top successfully, also adding an enemy after user reaches 2000 points
 */
 
 const pointCalc = function()  {
@@ -191,7 +196,7 @@ const pointCalc = function()  {
     }   else if (score.points > 1400) {
         score.points += 400;
     }
-    if (score.points === 2250) {
+    if (score.points > 2000 && score.points < 2400) {
         allEnemies.push(enemy4);
     }
 }
@@ -226,7 +231,7 @@ const score = new Panel(0, 0, 400, 40, 'scores');
 const enemy1 = new Enemy();
 const enemy2 = new Enemy();
 const enemy3 = new Enemy();
-const enemy4 = new Enemy();
+const enemy4 = new Enemy(); // enemy4 is pushed only when the score is more then 2000 in pointCalcl(). 
 allEnemies.push(enemy1, enemy2, enemy3);
 
 /*
