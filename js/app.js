@@ -7,6 +7,7 @@ function Enemy() {
     this.sprite = 'images/enemy-bug.png';
     this.x = -101;
     this.y = [];
+    this.level = 1;
     this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;
     for (let i = 0; i <= 5; i++) {
         this.y.push(i * 83 + 60);
@@ -28,9 +29,18 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
         this.x = -101; 
         this.coordinatesY = this.y[this.random()];
-        this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;
-    }
+        if (score.points <= 200) {
+            this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;        
+            } else if (score.points > 200 && score.points <= 600) {
+            this.speed = Math.floor(Math.random() * (450 - 150 + 1)) + 250;
+            }   else if (score.points > 600 && score.points <= 1400) {
+            this.speed = Math.floor(Math.random() * (450 - 250 + 1)) + 350;
+            }   else if (score.points > 1400) {
+            this.speed = Math.floor(Math.random() * (450 - 350 + 1)) + 450;
+            }
+        }
 };
+
 /*
 * Creating a render method for Enemies to be drawn on the page
 */
@@ -172,7 +182,16 @@ const lifeRemove = function() {
 */
 
 const pointCalc = function()  {
-    score.points += 50;
+    if (score.points <= 200) {
+        score.points += 50;        
+    } else if (score.points > 200 && score.points <= 600) {
+        score.points += 100;
+    }   else if (score.points > 600 && score.points <= 1400) {
+        score.points += 200;
+    }   else if (score.points > 1400) {
+        score.points += 400;
+    }
+
 }
 
 /*
