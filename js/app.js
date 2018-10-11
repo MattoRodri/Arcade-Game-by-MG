@@ -178,7 +178,7 @@ const lifeRemove = function() {
 }
 
 /*
-* Creating pointCalc function in order to add points when reached the top successfully
+* Creating pointCalc function in order to add points when reached the top successfully, also adding an enemy after user reaches 2200 points
 */
 
 const pointCalc = function()  {
@@ -191,7 +191,9 @@ const pointCalc = function()  {
     }   else if (score.points > 1400) {
         score.points += 400;
     }
-
+    if (score.points === 2250) {
+        allEnemies.push(enemy4);
+    }
 }
 
 /*
@@ -224,6 +226,7 @@ const score = new Panel(0, 0, 400, 40, 'scores');
 const enemy1 = new Enemy();
 const enemy2 = new Enemy();
 const enemy3 = new Enemy();
+const enemy4 = new Enemy();
 allEnemies.push(enemy1, enemy2, enemy3);
 
 /*
