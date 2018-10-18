@@ -66,6 +66,7 @@ function Player() {
     this.sprite = 'images/char-boy.png';
     this.collision = false;
     this.lifes = 3;
+    this.level = 0;
 }
 
 /*
@@ -83,6 +84,7 @@ Player.prototype.update = function() {
     }  else if (this.y <= -83) {
         this.y = this.startingY;
         this.x = this.startingX;
+        this.level ++; 
         pointCalc();
     }
 };
@@ -195,10 +197,27 @@ const pointCalc = function()  {
         score.points += 200;
     }   else if (score.points > 1400) {
         score.points += 400;
+    }   else if (score.points > 3200) {
+        score.points += 800;
     }
     if (score.points > 2000 && score.points < 2400) {
         allEnemies.push(enemy4);
     }
+    if (score.points > 3200 && score.points < 3700) {
+        allEnemies.push(enemy4);
+    }
+}
+
+/*
+* A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
+*/
+
+function Spawns() {
+    this.heart = 'images/Heart.png';
+    this.ggem = 'images/Gem-Green.png';
+    this.bgem = 'images/Gem-Blue.png';
+    this.ogem = 'images/Gem-Orange.png';
+    this.star = 'images/Star.png'; 
 }
 
 /*
@@ -232,6 +251,7 @@ const enemy1 = new Enemy();
 const enemy2 = new Enemy();
 const enemy3 = new Enemy();
 const enemy4 = new Enemy(); // enemy4 is pushed only when the score is more then 2000 in pointCalcl(). 
+const enemy5 = new Enemy(); // enemy5 is pushed only when the score is more then 2000 in pointCalcl(). 
 allEnemies.push(enemy1, enemy2, enemy3);
 
 /*
