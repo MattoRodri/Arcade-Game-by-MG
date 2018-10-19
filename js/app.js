@@ -133,6 +133,7 @@ Panel.prototype.render = function() {
 /*
 * Creating a update method for Panel for all the updates for the point calculation, point reductions etc.
 */
+
 Panel.prototype.update = function() {
     
 };
@@ -213,11 +214,55 @@ const pointCalc = function()  {
 */
 
 function Spawns() {
+    this.collectables = [];
     this.heart = 'images/Heart.png';
     this.ggem = 'images/Gem-Green.png';
     this.bgem = 'images/Gem-Blue.png';
     this.ogem = 'images/Gem-Orange.png';
     this.star = 'images/Star.png'; 
+    this.h = 103; 
+    this.w = 63;
+    this.collectables.push(this.heart, this.ggem, this.bgem, this.ogem, this.star);
+    this.level1 = Math.floor(Math.random() * 2);
+    this.level2 = Math.floor(Math.random() * 3);
+    this.level3 = Math.floor(Math.random() * 4);
+    this.level4 = Math.floor(Math.random() * 5);
+    this.collectY = [];
+        for (let i = 0; i <= 5; i++) {
+        this.collectY.push(i * 83 + 113);
+    }
+    this.collectX = [];
+        for (let i = 0; i <= 4; i++) {
+        this.collectX.push((i *101) + 20);
+    }
+    this.spawnY = this.collectY[this.randomCollectY()];
+    this.spawnX = this.collectX[this.randomCollectX()];
+}
+
+/*
+* Creating a random() method for Spawns, in order for all the collectables to spawn randomly on the board.
+*/
+
+Spawns.prototype.randomCollectY = function () {
+        let randomSpawnY = Math.floor( Math.random() * 3 );
+        return randomSpawnY;
+}
+
+Spawns.prototype.randomCollectX = function () {
+        let randomSpawnY = Math.floor( Math.random() * 5 );
+        return randomSpawnY;
+}
+
+
+/*
+* Creating a render() method for collectables, in order for all the collectables to be randomly drawn on the board.
+*/
+
+Spawns.prototype.render = function() {
+    if (player.level > 0) {
+        ctx.drawImage(Resources.get(this.collectables[this.level1]), this.spawnX, this.spawnY, this.w, this.h);
+    }
+    
 }
 
 /*
@@ -242,7 +287,8 @@ document.addEventListener('keyup', function(e) {
 */
 
 const heart = new Panel(40, 60, 0, 0, 'hearts');
-const score = new Panel(0, 0, 400, 40, 'scores');  
+const score = new Panel(0, 0, 400, 40, 'scores');
+const collectable = new Spawns();  
 
 /*
 * Create a new enemy and push it to allEnemies Array
