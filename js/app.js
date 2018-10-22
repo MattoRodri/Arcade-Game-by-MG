@@ -8,7 +8,7 @@ function Enemy() {
     this.x = -101;
     this.y = [];
     this.level = 0;
-    this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;
+    this.speed = Math.floor(Math.random() * (400 - 100 + 1)) + 100;
     for (let i = 0; i <= 5; i++) {
         this.y.push(i * 83 + 60);
     }
@@ -29,18 +29,18 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
         this.x = -101; 
         this.coordinatesY = this.y[this.random()];
-        if (score.points <= 200) {
-            this.speed = Math.floor(Math.random() * (450 - 100 + 1)) + 100;      
-            } else if (score.points > 200 && score.points <= 600) {
-            this.speed = Math.floor(Math.random() * (450 - 150 + 1)) + 250;
+        if (player.level <= 4) {
+            this.speed = Math.floor(Math.random() * (400 - 100 + 1)) + 100;      
+            } else if (player.level > 4 && player .level <= 8) {
+            this.speed = Math.floor(Math.random() * (400 - 150 + 1)) + 150;
             this.level = 1;
-            }   else if (score.points > 600 && score.points <= 1400) {
-            this.speed = Math.floor(Math.random() * (450 - 250 + 1)) + 350;
+            }   else if (player.level > 8 && player.level <= 12) {
+            this.speed = Math.floor(Math.random() * (400 - 250 + 1)) + 250;
             this.level = 2;
-            }   else if (score.points > 1400) {
-            this.speed = Math.floor(Math.random() * (450 - 350 + 1)) + 450;
+            }   else if (player.level > 12 && player.level <= 16) {
+            this.speed = Math.floor(Math.random() * (400 - 350 + 1)) + 350;
             this.level = 3;
-            } else if (score.points > 1400) {
+            } else if (player.level > 16) {
             this.level = 4;
             }
         }
@@ -190,21 +190,21 @@ const lifeRemove = function() {
 */
 
 const pointCalc = function()  {
-    if (score.points <= 200) {
+    if (player.level <= 4) {
         score.points += 50;        
-    } else if (score.points > 200 && score.points <= 600) {
+    } else if (player.level > 4 && player .level <= 8) {
         score.points += 100;
-    }   else if (score.points > 600 && score.points <= 1400) {
+    }   else if (player.level > 8 && player.level <= 12) {
         score.points += 200;
-    }   else if (score.points > 1400) {
+    }   else if (player.level > 12 && player.level <= 16) {
         score.points += 400;
-    }   else if (score.points > 3200) {
+    }   else if (player.level > 16) {
         score.points += 800;
     }
-    if (score.points > 2000 && score.points < 2400) {
+    if (player.level === 12) {
         allEnemies.push(enemy4);
     }
-    if (score.points > 3200 && score.points < 3700) {
+    if (player.level === 16) {
         allEnemies.push(enemy4);
     }
 }
@@ -213,16 +213,12 @@ const pointCalc = function()  {
 * A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
 */
 
-function Spawns() {
-    this.collectables = [];
-    this.heart = 'images/Heart.png';
-    this.ggem = 'images/Gem-Green.png';
-    this.bgem = 'images/Gem-Blue.png';
-    this.ogem = 'images/Gem-Orange.png';
-    this.star = 'images/Star.png'; 
+    const collectables = [];
+
+function Spawns(item) {
+    this.sprite = item;
     this.h = 103; 
     this.w = 63;
-    this.collectables.push(this.heart, this.ggem, this.bgem, this.ogem, this.star);
     this.level1 = Math.floor(Math.random() * 2);
     this.level2 = Math.floor(Math.random() * 3);
     this.level3 = Math.floor(Math.random() * 4);
@@ -260,7 +256,7 @@ Spawns.prototype.randomCollectX = function () {
 
 Spawns.prototype.render = function() {
     if (player.level > 0) {
-        ctx.drawImage(Resources.get(this.collectables[this.level1]), this.spawnX, this.spawnY, this.w, this.h);
+        ctx.drawImage(Resources.get(collectables[this.level1]), this.spawnX, this.spawnY, this.w, this.h);
     }
     
 }
@@ -297,10 +293,19 @@ const enemy1 = new Enemy();
 const enemy2 = new Enemy();
 const enemy3 = new Enemy();
 const enemy4 = new Enemy(); // enemy4 is pushed only when the score is more then 2000 in pointCalcl(). 
-const enemy5 = new Enemy(); // enemy5 is pushed only when the score is more then 2000 in pointCalcl(). 
+const enemy5 = new Enemy(); // enemy5 is pushed only when the score is more then 3200 in pointCalcl(). 
 allEnemies.push(enemy1, enemy2, enemy3);
 
 /*
 * Create a new player
 */
+
 const player = new Player();
+
+/*
+* Create collectables 
+*/
+
+const heartCol = new Spawns('images/Heart.png');
+const greenGem = new Spawns('images/Gem-Green.png');
+//collectables.push('images/Heart.png', 'images/Gem-Green.png', 'images/Gem-Blue.png', 'images/Gem-Orange.png', 'images/Star.png');
