@@ -213,16 +213,19 @@ const pointCalc = function()  {
 * A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
 */
 
-    const collectables = [];
-
+const collectables = [];
+let level1 = Math.floor(Math.random() * 2);
+let level2 = Math.floor(Math.random() * 3);
+let level3 = Math.floor(Math.random() * 4);
+let level4 = Math.floor(Math.random() * 5);
 function Spawns(item) {
     this.sprite = item;
     this.h = 103; 
     this.w = 63;
-    this.level1 = Math.floor(Math.random() * 2);
-    this.level2 = Math.floor(Math.random() * 3);
-    this.level3 = Math.floor(Math.random() * 4);
-    this.level4 = Math.floor(Math.random() * 5);
+    // this.level1 = Math.floor(Math.random() * 2);
+    // this.level2 = Math.floor(Math.random() * 3);
+    // this.level3 = Math.floor(Math.random() * 4);
+    // this.level4 = Math.floor(Math.random() * 5);
     this.collectY = [];
         for (let i = 0; i <= 5; i++) {
         this.collectY.push(i * 83 + 113);
@@ -256,9 +259,27 @@ Spawns.prototype.randomCollectX = function () {
 
 Spawns.prototype.render = function() {
     if (player.level > 0) {
-        ctx.drawImage(Resources.get(collectables[this.level1]), this.spawnX, this.spawnY, this.w, this.h);
+        ctx.drawImage(Resources.get(collectables[level1].sprite), this.spawnX, this.spawnY, this.w, this.h);
     }
-    
+}
+
+/*
+* Creating collect() function to colelct the randomly spawned items
+*/
+
+const collect = function() {
+    for (let i = 0; i < collectables.length; i++) {
+        let enemyRadius = 71/2;
+        let playerRadius = 71/2;
+        let dx = collectables[i].spawnX - player.x; 
+        let dy = collectables[i].spawnY - player.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < enemyRadius + playerRadius) {
+            player.x = player.startingX;
+            player.y = player.startingY;
+            console.log(collectables[i].sprite);
+       }
+    }
 }
 
 /*
@@ -308,4 +329,7 @@ const player = new Player();
 
 const heartCol = new Spawns('images/Heart.png');
 const greenGem = new Spawns('images/Gem-Green.png');
-//collectables.push('images/Heart.png', 'images/Gem-Green.png', 'images/Gem-Blue.png', 'images/Gem-Orange.png', 'images/Star.png');
+// const blueGem = new Spawns('images/Gem-Blue.png');
+// const orangeGem = new Spawns('images/Gem-Orange.png');
+// const star = new Spawns('images/Star.png');
+collectables.push(heartCol, greenGem);
