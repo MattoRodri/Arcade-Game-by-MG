@@ -96,7 +96,7 @@ Player.prototype.update = function() {
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
+const player = new Player();
 /*
 * A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
 */
@@ -213,19 +213,25 @@ const pointCalc = function()  {
 * A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
 */
 
-const collectables = [];
-let level1 = Math.floor(Math.random() * 2);
-let level2 = Math.floor(Math.random() * 3);
-let level3 = Math.floor(Math.random() * 4);
-let level4 = Math.floor(Math.random() * 5);
-function Spawns(item) {
-    this.sprite = item;
+//const collectables = [];
+// let level1 = Math.floor(Math.random() * 2);
+// let level2 = Math.floor(Math.random() * 3);
+// let level3 = Math.floor(Math.random() * 4);
+// let level4 = Math.floor(Math.random() * 5);
+function Spawns() {
+    this.collectables = ['images/Heart.png', 'images/Gem-Green.png'];
     this.h = 103; 
     this.w = 63;
-    // this.level1 = Math.floor(Math.random() * 2);
-    // this.level2 = Math.floor(Math.random() * 3);
-    // this.level3 = Math.floor(Math.random() * 4);
-    // this.level4 = Math.floor(Math.random() * 5);
+    this.currentLevel; 
+    if (player.level <= 4) {
+        this.currentLevel = Math.floor(Math.random() * 2);        
+    } else if (player.level > 4 && player .level <= 8) {
+        this.currentLevel = Math.floor(Math.random() * 3);
+    }   else if (player.level > 8 && player.level <= 12) {
+        this.currentLevel = Math.floor(Math.random() * 4);
+    }   else if (player.level > 12 && player.level <= 16) {
+        this.currentLevel = Math.floor(Math.random() * 5);
+    }
     this.collectY = [];
         for (let i = 0; i <= 5; i++) {
         this.collectY.push(i * 83 + 113);
@@ -259,7 +265,9 @@ Spawns.prototype.randomCollectX = function () {
 
 Spawns.prototype.render = function() {
     if (player.level > 0) {
-        ctx.drawImage(Resources.get(collectables[level1].sprite), this.spawnX, this.spawnY, this.w, this.h);
+        ctx.drawImage(Resources.get(this.collectables[this.currentLevel]), this.spawnX, this.spawnY, this.w, this.h);
+        //debugger;
+        this.collect();
     }
 }
 
@@ -267,19 +275,17 @@ Spawns.prototype.render = function() {
 * Creating collect() function to colelct the randomly spawned items
 */
 
-const collect = function() {
-    for (let i = 0; i < collectables.length; i++) {
-        let enemyRadius = 71/2;
+Spawns.prototype.collect = function() {
+        let collectRadius = 22/2;
         let playerRadius = 71/2;
-        let dx = collectables[i].spawnX - player.x; 
-        let dy = collectables[i].spawnY - player.y;
+        let dx = this.spawnX - player.x; 
+        let dy = this.spawnY - player.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < enemyRadius + playerRadius) {
+            if (distance < collectRadius + playerRadius) {
             player.x = player.startingX;
             player.y = player.startingY;
-            console.log(collectables[i].sprite);
+            console.log(this.collectables[this.currentLevel]);
        }
-    }
 }
 
 /*
@@ -321,7 +327,7 @@ allEnemies.push(enemy1, enemy2, enemy3);
 * Create a new player
 */
 
-const player = new Player();
+//const player = new Player();
 
 /*
 * Create collectables 
@@ -332,4 +338,4 @@ const greenGem = new Spawns('images/Gem-Green.png');
 // const blueGem = new Spawns('images/Gem-Blue.png');
 // const orangeGem = new Spawns('images/Gem-Orange.png');
 // const star = new Spawns('images/Star.png');
-collectables.push(heartCol, greenGem);
+//collectables.push(heartCol, greenGem);
