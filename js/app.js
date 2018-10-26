@@ -70,6 +70,12 @@ function Player() {
 }
 
 /*
+* Create a new player
+*/
+
+const player = new Player();
+
+/*
 * Creating an update method to update the player movements, set some movement rules. 
 */
 
@@ -85,6 +91,7 @@ Player.prototype.update = function() {
         this.y = this.startingY;
         this.x = this.startingX;
         this.level ++; 
+        itemSpawned = true;
         pointCalc();
     }
 };
@@ -96,7 +103,7 @@ Player.prototype.update = function() {
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-const player = new Player();
+
 /*
 * A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
 */
@@ -213,25 +220,12 @@ const pointCalc = function()  {
 * A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
 */
 
-//const collectables = [];
-// let level1 = Math.floor(Math.random() * 2);
-// let level2 = Math.floor(Math.random() * 3);
-// let level3 = Math.floor(Math.random() * 4);
-// let level4 = Math.floor(Math.random() * 5);
+let itemSpawned = true;
 function Spawns() {
     this.collectables = ['images/Heart.png', 'images/Gem-Green.png'];
     this.h = 103; 
     this.w = 63;
-    this.currentLevel; 
-    if (player.level <= 4) {
-        this.currentLevel = Math.floor(Math.random() * 2);        
-    } else if (player.level > 4 && player .level <= 8) {
-        this.currentLevel = Math.floor(Math.random() * 3);
-    }   else if (player.level > 8 && player.level <= 12) {
-        this.currentLevel = Math.floor(Math.random() * 4);
-    }   else if (player.level > 12 && player.level <= 16) {
-        this.currentLevel = Math.floor(Math.random() * 5);
-    }
+    this.currentLevel = this.levelCalc(); 
     this.collectY = [];
         for (let i = 0; i <= 5; i++) {
         this.collectY.push(i * 83 + 113);
@@ -242,6 +236,22 @@ function Spawns() {
     }
     this.spawnY = this.collectY[this.randomCollectY()];
     this.spawnX = this.collectX[this.randomCollectX()];
+}
+
+/*
+* Calculating and determening currentLevel
+*/
+
+Spawns.prototype.levelCalc = function() {
+        if (player.level <= 4) {
+        return Math.floor(Math.random() * 2);        
+    } else if (player.level > 4 && player .level <= 8) {
+        return Math.floor(Math.random() * 3);
+    }   else if (player.level > 8 && player.level <= 12) {
+        return Math.floor(Math.random() * 4);
+    }   else if (player.level > 12 && player.level <= 16) {
+        return Math.floor(Math.random() * 5);
+    }
 }
 
 /*
@@ -264,9 +274,8 @@ Spawns.prototype.randomCollectX = function () {
 */
 
 Spawns.prototype.render = function() {
-    if (player.level > 0) {
+    if (player.level > 0 && itemSpawned === true) {
         ctx.drawImage(Resources.get(this.collectables[this.currentLevel]), this.spawnX, this.spawnY, this.w, this.h);
-        //debugger;
         this.collect();
     }
 }
@@ -282,9 +291,10 @@ Spawns.prototype.collect = function() {
         let dy = this.spawnY - player.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < collectRadius + playerRadius) {
-            player.x = player.startingX;
-            player.y = player.startingY;
-            console.log(this.collectables[this.currentLevel]);
+            itemSpawned = false;
+            this.spawnY = this.collectY[this.randomCollectY()];
+            this.spawnX = this.collectX[this.randomCollectX()];
+            this.currentLevel = this.levelCalc(); 
        }
 }
 
@@ -323,19 +333,3 @@ const enemy4 = new Enemy(); // enemy4 is pushed only when the score is more then
 const enemy5 = new Enemy(); // enemy5 is pushed only when the score is more then 3200 in pointCalcl(). 
 allEnemies.push(enemy1, enemy2, enemy3);
 
-/*
-* Create a new player
-*/
-
-//const player = new Player();
-
-/*
-* Create collectables 
-*/
-
-const heartCol = new Spawns('images/Heart.png');
-const greenGem = new Spawns('images/Gem-Green.png');
-// const blueGem = new Spawns('images/Gem-Blue.png');
-// const orangeGem = new Spawns('images/Gem-Orange.png');
-// const star = new Spawns('images/Star.png');
-//collectables.push(heartCol, greenGem);
