@@ -291,10 +291,15 @@ Spawns.prototype.collect = function() {
         let dy = this.spawnY - player.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < collectRadius + playerRadius) {
-            itemSpawned = false;
-            this.spawnY = this.collectY[this.randomCollectY()];
-            this.spawnX = this.collectX[this.randomCollectX()];
-            this.currentLevel = this.levelCalc(); 
+                if (this.currentLevel === 0 && player.lifes < 6) {
+                    player.lifes ++;
+                } else if (this.currentLevel === 1) {
+                    score.points += 50;
+                }               
+                itemSpawned = false;
+                this.spawnY = this.collectY[this.randomCollectY()];
+                this.spawnX = this.collectX[this.randomCollectX()];
+                this.currentLevel = this.levelCalc(); 
        }
 }
 
