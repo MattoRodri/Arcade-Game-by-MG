@@ -179,7 +179,7 @@ const checkCollisions = function() {
             lifeRemove();
        }
     }
-}
+};
 
 /*
 * Creating lifeRemove function in order to remove lifes when collided
@@ -190,7 +190,7 @@ const lifeRemove = function() {
         player.lifes -= 1;
         player.collision = false;
     } 
-}
+};
 
 /*
 * Creating pointCalc function in order to add points when reached the top successfully, also adding an enemy after user reaches 2000 points
@@ -214,17 +214,20 @@ const pointCalc = function()  {
     if (player.level === 16) {
         allEnemies.push(enemy4);
     }
-}
+};
 
 /*
-* A panel on the top of the canvas class. it will display lifes (hearts), points (score), and a pause button. 
+* Spawns class and the array for all the collectables which will spawns and give points, lifes or both 
 */
 
 let itemSpawned = true;
-function Spawns() {
-    this.collectables = ['images/Heart.png', 'images/Gem-Green.png'];
+const collectables = [];
+
+function Spawns(type) {
     this.h = 103; 
     this.w = 63;
+    this.type = type
+    this.sprite = `images/${type}.png`;
     this.currentLevel = this.levelCalc(); 
     this.collectY = [];
         for (let i = 0; i <= 5; i++) {
@@ -249,10 +252,10 @@ Spawns.prototype.levelCalc = function() {
         return Math.floor(Math.random() * 3);
     }   else if (player.level > 8 && player.level <= 12) {
         return Math.floor(Math.random() * 4);
-    }   else if (player.level > 12 && player.level <= 16) {
+    }   else if (player.level > 12) {
         return Math.floor(Math.random() * 5);
     }
-}
+};
 
 /*
 * Creating a random() method for Spawns, in order for all the collectables to spawn randomly on the board.
@@ -261,12 +264,12 @@ Spawns.prototype.levelCalc = function() {
 Spawns.prototype.randomCollectY = function () {
         let randomSpawnY = Math.floor( Math.random() * 3 );
         return randomSpawnY;
-}
+};
 
 Spawns.prototype.randomCollectX = function () {
         let randomSpawnY = Math.floor( Math.random() * 5 );
         return randomSpawnY;
-}
+};
 
 
 /*
@@ -275,13 +278,13 @@ Spawns.prototype.randomCollectX = function () {
 
 Spawns.prototype.render = function() {
     if (player.level > 0 && itemSpawned === true) {
-        ctx.drawImage(Resources.get(this.collectables[this.currentLevel]), this.spawnX, this.spawnY, this.w, this.h);
+        ctx.drawImage(Resources.get(collectables[this.currentLevel].sprite), this.spawnX, this.spawnY, this.w, this.h);
         this.collect();
     }
-}
+};
 
 /*
-* Creating collect() function to colelct the randomly spawned items
+* Creating collect() function to colelct the randomly spawned items, called in Spawns render function
 */
 
 Spawns.prototype.collect = function() {
@@ -295,17 +298,23 @@ Spawns.prototype.collect = function() {
                     player.lifes ++;
                 } else if (this.currentLevel === 1) {
                     score.points += 50;
+                } else if (this.currentLevel === 2) {
+                    score.points += 100;
+                } else if (this.currentLevel === 3) {
+                    score.points += 200;
+                } else if (this.currentLevel === 4) {
+                    score.points += 400;
+                    player.lifes ++;
                 }               
                 itemSpawned = false;
                 this.spawnY = this.collectY[this.randomCollectY()];
                 this.spawnX = this.collectX[this.randomCollectX()];
                 this.currentLevel = this.levelCalc(); 
        }
-}
+};
 
 /*
-* This listens for key presses and sends the keys to your
-* Player.handleInput() method.
+* This listens for key presses and sends the keys to your Player.handleInput() method
 */
 
 document.addEventListener('keyup', function(e) {
@@ -337,4 +346,17 @@ const enemy3 = new Enemy();
 const enemy4 = new Enemy(); // enemy4 is pushed only when the score is more then 2000 in pointCalcl(). 
 const enemy5 = new Enemy(); // enemy5 is pushed only when the score is more then 3200 in pointCalcl(). 
 allEnemies.push(enemy1, enemy2, enemy3);
+
+
+
+/*
+* Create collectables objects and push it to collectables array
+*/ 
+
+const heartCol = new Spawns('Heart');
+const gGemCol = new Spawns('Gem-Green');
+const bGemCol = new Spawns('Gem-Blue');
+const oGemCol = new Spawns('Gem-Orange');
+const starCol = new Spawns('Star');
+collectables.push(heartCol, gGemCol, bGemCol, oGemCol, starCol);
 
