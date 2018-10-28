@@ -152,10 +152,10 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
         heart.render();
         score.render();
+        pause.render();
         collectable.render();
     }
 
@@ -186,7 +186,8 @@ var Engine = (function(global) {
         'images/char-princess-girl.png',
         'images/Gem-Blue.png',
         'images/Gem-Green.png',
-        'images/Gem-Orange.png',     
+        'images/Gem-Orange.png',
+        'images/Pause-Button.png'     
     ]);
     Resources.onReady(init);
 

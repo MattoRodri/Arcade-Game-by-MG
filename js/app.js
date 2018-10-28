@@ -116,6 +116,7 @@ function Panel(w, h, x, y, group) {
     this.x = x; 
     this.y = y; 
     this.spriteHeart = 'images/Heart.png'; 
+    this.spritePause = 'images/Pause-Button.png';
     this.group = group; 
 } 
 
@@ -135,14 +136,9 @@ Panel.prototype.render = function() {
         ctx.font = "25px 'Audiowide', cursive";        
         ctx.fillText(this.points, this.x, this.y);
     }
-};
-
-/*
-* Creating a update method for Panel for all the updates for the point calculation, point reductions etc.
-*/
-
-Panel.prototype.update = function() {
-    
+    if (this.group === 'pause') {
+        ctx.drawImage(Resources.get(this.spritePause), this.x + this.heartX, this.y, this.w, this.h);
+    }    
 };
 
 /*
@@ -304,7 +300,9 @@ Spawns.prototype.collect = function() {
                     score.points += 200;
                 } else if (this.currentLevel === 4) {
                     score.points += 400;
-                    player.lifes ++;
+                    if (player.lifes < 6) {
+                        player.lifes ++;
+                    }
                 }               
                 itemSpawned = false;
                 this.spawnY = this.collectY[this.randomCollectY()];
@@ -335,7 +333,7 @@ document.addEventListener('keyup', function(e) {
 
 const heart = new Panel(40, 60, 0, 0, 'hearts');
 const score = new Panel(0, 0, 400, 40, 'scores');
-const collectable = new Spawns();  
+const pause = new Panel(35, 35, 270, 13, 'pause');
 
 /*
 * Create a new enemy and push it to allEnemies Array
@@ -353,6 +351,7 @@ allEnemies.push(enemy1, enemy2, enemy3);
 * Create collectables objects and push it to collectables array
 */ 
 
+const collectable = new Spawns();  
 const heartCol = new Spawns('Heart');
 const gGemCol = new Spawns('Gem-Green');
 const bGemCol = new Spawns('Gem-Blue');
