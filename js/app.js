@@ -3,6 +3,7 @@
  */ 
 
 let allEnemies = [];
+
 function Enemy() {
     this.sprite = 'images/enemy-bug.png';
     this.x = -101;
@@ -141,6 +142,12 @@ Panel.prototype.render = function() {
     }    
 };
 
+ /*
+ * Creating a function which will take effect when pause button is clicked
+ */   
+
+
+
 /*
 * Creating handleInput function for controlling the player with arrows on the keyboard
 */
@@ -222,7 +229,7 @@ const collectables = [];
 function Spawns(type) {
     this.h = 103; 
     this.w = 63;
-    this.type = type
+    this.type = type;
     this.sprite = `images/${type}.png`;
     this.currentLevel = this.levelCalc(); 
     this.collectY = [];
@@ -331,9 +338,9 @@ document.addEventListener('keyup', function(e) {
 * Creating panel objects 
 */
 
-const heart = new Panel(40, 60, 0, 0, 'hearts');
+const heart = new Panel(35, 55, 0, 0, 'hearts');
 const score = new Panel(0, 0, 400, 40, 'scores');
-const pause = new Panel(35, 35, 270, 13, 'pause');
+const pause = new Panel(35, 35, 252.5 - 35/2, 13, 'pause');
 
 /*
 * Create a new enemy and push it to allEnemies Array
