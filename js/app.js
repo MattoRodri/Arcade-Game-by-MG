@@ -345,6 +345,7 @@ const pause = new Panel(35, 35, 252.5 - 35/2, 13, 'pause');
 /*
 * Create a new enemy and push it to allEnemies Array
 */ 
+
 const enemy1 = new Enemy();
 const enemy2 = new Enemy();
 const enemy3 = new Enemy();
@@ -365,4 +366,13 @@ const bGemCol = new Spawns('Gem-Blue');
 const oGemCol = new Spawns('Gem-Orange');
 const starCol = new Spawns('Star');
 collectables.push(heartCol, gGemCol, bGemCol, oGemCol, starCol);
+
+/*
+* Creating start menu, the funcition will called in engine.js init(), after all tge content is loaded. 
+*/ 
+
+const startMenu = function() {
+    
+} 
+
 
