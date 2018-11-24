@@ -159,16 +159,15 @@ var Engine = (function(global) {
         collectable.render();
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
+    /* 
+    *Created a modal which appears when the page loads. It will eventually hold the menu. 
+    */
+
     function reset() {
-        // noop
         const body = document.querySelector('body');
         const modal = document.createElement('modal');
         modal.classList = 'menu';
-        modal.style.background = "rgba(0, 0, 0, 0.7)"; 
+        modal.style.background = "rgba(0, 0, 0, 0)"; 
         modal.style.width = `${canvas.width}px`; 
         modal.style.height = `${canvas.height}px`;
         ctx.clearRect(0,0, canvas.width, canvas.height);
@@ -179,6 +178,10 @@ var Engine = (function(global) {
         console.log('hi'); 
     }
 
+
+    /*
+    * play() function initiats the game when the start menu modal is clicked.
+    */
     function play() {
         lastTime = Date.now();
         main();
