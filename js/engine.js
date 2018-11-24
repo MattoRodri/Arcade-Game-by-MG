@@ -64,8 +64,8 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
-        lastTime = Date.now();
-        main();
+        // lastTime = Date.now();
+        // main();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -165,6 +165,26 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        const body = document.querySelector('body');
+        const modal = document.createElement('modal');
+        modal.classList = 'menu';
+        modal.style.background = "rgba(0, 0, 0, 0.7)"; 
+        modal.style.width = `${canvas.width}px`; 
+        modal.style.height = `${canvas.height}px`;
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        body.appendChild(modal);
+        global.modal = modal;
+        modal.addEventListener('click', play, false);
+        render();
+        console.log('hi'); 
+    }
+
+    function play() {
+        lastTime = Date.now();
+        main();
+        const modal = document.querySelector('modal');
+        modal.parentNode.removeChild(modal);
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to
