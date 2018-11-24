@@ -160,6 +160,39 @@ var Engine = (function(global) {
     }
 
     /* 
+    *Created greyscale functions, it when the page loads the game is black and white, it gets colors after the game is started. 
+    */
+function greyscale() {
+            var rowImages = [
+                'images/water-block.png',   // Top row is water
+                'images/stone-block.png',   // Row 1 of 3 of stone
+                'images/stone-block.png',   // Row 2 of 3 of stone
+                'images/stone-block.png',   // Row 3 of 3 of stone
+                'images/grass-block.png',   // Row 1 of 2 of grass
+                'images/grass-block.png'    // Row 2 of 2 of grass
+            ],
+            numRows = 6,
+            numCols = 5,
+            row, col;
+
+            for (row = 0; row < numRows; row++) {
+            for (col = 0; col < numCols; col++) {
+                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+            }
+            let canvasData = ctx.getImageData(0, 0, 1000, 700);
+            let data = canvasData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                let noir = data[i] * 0.216 + data[i + 1] * 0.7152 + data[i + 2] * 0.0722;
+                data[i] = noir;
+                data[i + 1] = noir;
+                data[i + 2] = noir;
+            }
+            ctx.putImageData(canvasData, 0, 0);
+        }
+        renderEntities();
+}
+
+    /* 
     *Created a modal which appears when the page loads. It will eventually hold the menu. 
     */
 
@@ -173,9 +206,8 @@ var Engine = (function(global) {
         ctx.clearRect(0,0, canvas.width, canvas.height);
         body.appendChild(modal);
         global.modal = modal;
+        greyscale();
         modal.addEventListener('click', play, false);
-        render();
-        console.log('hi'); 
     }
 
 
@@ -183,6 +215,7 @@ var Engine = (function(global) {
     * play() function initiats the game when the start menu modal is clicked.
     */
     function play() {
+        render();
         lastTime = Date.now();
         main();
         const modal = document.querySelector('modal');
