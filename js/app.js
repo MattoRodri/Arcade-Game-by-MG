@@ -369,10 +369,57 @@ collectables.push(heartCol, gGemCol, bGemCol, oGemCol, starCol);
 
 /*
 * Creating start menu, the funcition will called in engine.js init(), after all tge content is loaded. 
+*/
+
+
+
+/*
+* Pausing the game
 */ 
 
-const startMenu = function() {
-    
-} 
+
+
+// let pause = false;
+
+// function main() 
+// {
+//   const anim = win.requestAnimationFrame(main);
+//   pauseChecker(anim);
+// }
+
+// function setPause(set)
+// {
+//   if (set === true)
+//   {
+//       pause = true;
+//   }
+// }
+
+// function pauseChecker(anim)
+// {
+//     if (pause === true)
+//   {
+//     win.cancelAnimationFrame(anim);    
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

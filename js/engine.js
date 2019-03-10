@@ -198,29 +198,80 @@ function greyscale() {
 
     function reset() {
         const body = document.querySelector('body');
-        const modal = document.createElement('modal');
+        const modal = document.createElement('modal'); 
+        const start = document.querySelector('btn');    
+        let menu = ['Start', 'Choose Player', 'Leaderboard'];
+        let menuClass = ['start btn', 'player btn', 'leaderboard btn'];
+
         modal.classList = 'menu';
         modal.style.background = "rgba(0, 0, 0, 0)"; 
         modal.style.width = `${canvas.width}px`; 
         modal.style.height = `${canvas.height}px`;
         ctx.clearRect(0,0, canvas.width, canvas.height);
         body.appendChild(modal);
-        global.modal = modal;
         greyscale();
         modal.addEventListener('click', play, false);
+
+        for (i = 0; i < menu.length; i++) {
+            const menusBtns = document.createElement('button');
+            menusBtns.textContent = menu[i];
+            menusBtns.classList = menuClass[i];
+            modal.appendChild(menusBtns);
+        }
     }
 
 
     /*
     * play() function initiats the game when the start menu modal is clicked.
     */
-    function play() {
-        render();
-        lastTime = Date.now();
-        main();
-        const modal = document.querySelector('modal');
-        modal.parentNode.removeChild(modal);
+    function play(e) {
+        // const target = e.target.className;
+        // if (target === 'start btn') {
+        // render();
+        // lastTime = Date.now();
+        // main();
+        // const modal = document.querySelector('modal');
+        // modal.parentNode.removeChild(modal); 
+        // }
 
+
+
+        let start = false;
+        const target = e.target.parentNode;
+        const childNodes = target.childNodes;
+
+        let newPos = -1500;
+        let timeout = 200;
+        for (let i = 0; i < childNodes.length; i++)
+        {
+
+            if (start == false)
+            {
+                childNodes[i].style.transform = `translateY(${newPos}px)`;
+            }
+            else
+            {
+                console.log(childNodes[i]);
+                setTimeout(function() {
+                    childNodes[i].style.transform = `translateY(${newPos}px)`;
+                }, timeout);
+                timeout += 200;
+            }
+            if (i === 0)
+            {
+                start = true;
+            }
+            newPos += 200
+
+
+}
+//target.style.transform = "translateY(-200px)";
+setTimeout(function() {
+    lastTime = Date.now();
+    main();
+    const modal = document.querySelector('modal');
+    modal.parentNode.removeChild(modal);
+}, 700);
     }
 
     /* Go ahead and load all of the images we know we're going to need to
