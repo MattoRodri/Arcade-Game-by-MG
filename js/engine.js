@@ -225,53 +225,39 @@ function greyscale() {
     * play() function initiats the game when the start menu modal is clicked.
     */
     function play(e) {
-        // const target = e.target.className;
-        // if (target === 'start btn') {
-        // render();
-        // lastTime = Date.now();
-        // main();
-        // const modal = document.querySelector('modal');
-        // modal.parentNode.removeChild(modal); 
-        // }
+        const targetMain = e.target.className;
+        if (targetMain === 'start btn') {
+            let start = false;
+            const target = e.target.parentNode;
+            const childNodes = target.childNodes;
 
-
-
-        let start = false;
-        const target = e.target.parentNode;
-        const childNodes = target.childNodes;
-
-        let newPos = -1500;
-        let timeout = 200;
-        for (let i = 0; i < childNodes.length; i++)
-        {
-
-            if (start == false)
-            {
-                childNodes[i].style.transform = `translateY(${newPos}px)`;
-            }
-            else
-            {
-                console.log(childNodes[i]);
-                setTimeout(function() {
+            let newPos = -1500;
+            let timeout = 200;
+            for (let i = 0; i < childNodes.length; i++) {
+                if (start === false) {
                     childNodes[i].style.transform = `translateY(${newPos}px)`;
-                }, timeout);
-                timeout += 200;
-            }
-            if (i === 0)
-            {
-                start = true;
-            }
-            newPos += 200
+                } else {
+                    console.log(childNodes[i]);
+                    setTimeout(function() {
+                        childNodes[i].style.transform = `translateY(${newPos}px)`;
+                         //debugger;
+                    }, timeout);
 
+                    timeout += 200;
+                }
+                if (i === 0) {
+                    start = true;
+                }
+                newPos += 200;
 
-}
-//target.style.transform = "translateY(-200px)";
-setTimeout(function() {
-    lastTime = Date.now();
-    main();
-    const modal = document.querySelector('modal');
-    modal.parentNode.removeChild(modal);
-}, 700);
+            }             
+        setTimeout(function() {
+            lastTime = Date.now();
+            main();
+            const modal = document.querySelector('modal');
+            modal.parentNode.removeChild(modal);
+            }, 700); 
+            }
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -303,4 +289,6 @@ setTimeout(function() {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    const body = document.querySelector('body');
+    global.body = body;
 })(this);
